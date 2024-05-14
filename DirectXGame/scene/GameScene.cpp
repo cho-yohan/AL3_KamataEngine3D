@@ -24,6 +24,7 @@ void GameScene::Initialize() {
 
 	player_ = new Player();
 
+
 	player_->Initialize(model_, texturHandle_, &viewProjection_);
 }
 
