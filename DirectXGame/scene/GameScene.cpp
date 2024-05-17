@@ -15,7 +15,7 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
-	texturHandle_ = TextureManager::Load("uvChecker.png");
+	texturHandle_ = TextureManager::Load("mario.jpg");
 
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
