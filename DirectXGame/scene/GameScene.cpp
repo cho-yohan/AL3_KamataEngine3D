@@ -5,9 +5,11 @@
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
-
+	
+	delete player_;
 	delete model_;
 	delete modelBlock_;
+	delete modelSkydome_;
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -30,11 +32,15 @@ void GameScene::Initialize() {
 	// 3Dモデルのロード
 	model_ = Model::Create();
 	modelBlock_ = Model::Create();
+	modelSkydome_ = Model::CreateFromOBJ("sphere", true);
+
+	textureHandel_ = TextureManager::Load("mario.jpg");
 
 	viewProjection_.Initialize();
 	worldTransform_.Initialize();
 
-	/*textureHandle_ = TextureManager::Load("cube.jpg");*/
+	player_ = new Player();
+	player_->Initialize(model_, textureHandel_, &viewProjection_);
 
 	// 要数数
 	const uint32_t kNumBlockHorizontal = 20;
@@ -67,6 +73,8 @@ void GameScene::Initialize() {
 	debugCamera_ = new DebugCamera(1280, 720);
 }
 void GameScene::Update() {
+
+	player_->Update();
 
 	// カメラ処理
 	if (isDebugCameraActive_) {
@@ -129,6 +137,8 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
+	//player_->Draw();
+
 	for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
 			if (!worldTransformBlockYoko)
@@ -138,6 +148,8 @@ void GameScene::Draw() {
 			modelBlock_->Draw(*worldTransformBlockYoko, viewProjection_);
 		}
 	}
+
+	modelSkydome_->Draw(worldTransform_, viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
