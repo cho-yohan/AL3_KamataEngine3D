@@ -71,7 +71,7 @@ private: // メンバ変数
 	// デバッグカメラ有効
 	bool isDebugCameraActive_ = false;
 
-	//マップチップフィールド
+	// マップチップフィールド
 	MapChipField* mapChipField_;
 
 	/// <summary>
