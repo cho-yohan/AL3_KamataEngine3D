@@ -10,6 +10,7 @@
 #include "WorldTransform.h"
 #include "Player.h"
 #include "DebugCamera.h"
+#include "MapChipField.h"
 
 #include <vector>
 
@@ -67,6 +68,8 @@ private: // メンバ変数
 
 	// デバッグカメラ有効
 	bool isDebugCameraActive_ = false;
+
+	MapChipField* mapChipField_;
 
 	/// <summary>
 	/// ゲームシーン用
