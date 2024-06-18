@@ -21,6 +21,8 @@ GameScene::~GameScene() {
 	worldTransformBlocks_.clear();
 
 	delete debugCamera_;
+
+	delete mapChipField_;
 }
 
 void GameScene::Initialize() {
@@ -71,6 +73,9 @@ void GameScene::Initialize() {
 
 	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
+
+	mapChipField_ = new MapChipField;
+	mapChipField_->LoadMapChipCsv("Resources/map.csv");
 }
 void GameScene::Update() {
 
@@ -167,4 +172,9 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::GenerateBlocks() {
+	uint32_t GetNumBlockVirtical() const { return kNumBlockVirtical; }
+	uint32_t GetNumBlockHorizontal() const { return kNumBlockHorizontal; }
 }
