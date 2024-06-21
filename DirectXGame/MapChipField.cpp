@@ -57,8 +57,6 @@ void MapChipField::LoadMapChipCsv(const std::string& filePath) {
 	}
 }
 
-void MapChipField::Draw() {}
-
 MapChipType MapChipField::GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex) {
 	if (xIndex < 0 || kNumBlockHorizontal - 1 < xIndex) {
 		return MapChipType::kBlank;
