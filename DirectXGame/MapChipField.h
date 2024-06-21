@@ -1,4 +1,6 @@
-#include <WorldTransform.h>
+#include "Model.h"
+#include "WorldTransform.h"
+#include "ViewProjection.h"
 #include <vector>
 #include <string>
 
@@ -21,12 +23,18 @@ public:
 
 	void ResetMapChipData();
 	void LoadMapChipCsv(const std::string& filePath);
+	void Draw();
+
+	uint32_t GetNumBlockVirtical() const { return kNumBlockVirtical; }
+	uint32_t GetNumBlockHorizontal() const { return kNumBlockHorizontal; }
 
 private:
 	MapChipData mapChipData_;
 
-	uint32_t GetNumBlockVirtical() const { return kNumBlockVirtical; }
-	uint32_t GetNumBlockHorizontal() const { return kNumBlockHorizontal; }
+	WorldTransform worldTransform_;
+	ViewProjection viewProjection_;
+
+	Model* model_ = nullptr;
 
 	// 1ブロックのサイズ
 	static inline const float kBlockWidth = 1.0f;

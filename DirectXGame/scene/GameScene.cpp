@@ -177,8 +177,8 @@ void GameScene::Draw() {
 void GameScene::GenerateBlocks() {
 
 	// 要素数
-	uint32_t numBlockVirtical = 10;
-	uint32_t numBlockHorizontal = 20;
+	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
+	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
 
 	// 要素数を変更する
 	// 列数を設定 (縦方向のブロック数)
