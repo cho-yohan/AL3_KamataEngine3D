@@ -1,8 +1,8 @@
 #define NOMINMAX
+
 #include "Player.h"
 #include "Input.h"
 #include "DirectxCommon.h"
-//#include "Easing.h"
 #include <cassert>
 #include <numbers>
 #include <algorithm>
@@ -85,7 +85,7 @@ void Player::Update() {
 				// 状態に応じた角度を取得する
 				float destinationRotationY = destinationRotationYTable[static_cast<uint32_t>(lrDirection_)];
 				// 自キャラの角度を設定する
-				worldTransform_.rotation_.y = Easing::Liner(destinationRotationY, turnFirstRotationY_, Easing::EaseInOut(turnTimer_));
+				worldTransform_.rotation_.y = EaseInOut(destinationRotationY, turnFirstRotationY_, turnTimer_);
 			}
 
 		} else {

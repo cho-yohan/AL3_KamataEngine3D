@@ -41,20 +41,19 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 	worldTransform_.Initialize();
 
-	player_ = new Player();
-	//player_->Initialize(model_, textureHandel_, &viewProjection_);
-
-	// デバッグカメラの生成
-	debugCamera_ = new DebugCamera(1280, 720);
-
 	mapChipField_ = new MapChipField;
 	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 
-	GenerateBlocks();
+	player_ = new Player();
 
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(playerPosition.x, playerPosition.y);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(2, 18);
 
 	player_->Initialize(playerPosition, &viewProjection_);
+
+	GenerateBlocks();
+
+	// デバッグカメラの生成
+	debugCamera_ = new DebugCamera(1280, 720);
 }
 void GameScene::Update() {
 

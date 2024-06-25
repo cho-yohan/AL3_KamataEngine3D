@@ -1,7 +1,9 @@
+#pragma once
+
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "MathUtilityForText.h"
+#include "myMath.h"
 
 /// <summary>
 /// 自キャラ
