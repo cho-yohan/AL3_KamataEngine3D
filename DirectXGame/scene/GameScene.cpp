@@ -42,34 +42,7 @@ void GameScene::Initialize() {
 	worldTransform_.Initialize();
 
 	player_ = new Player();
-	player_->Initialize(model_, textureHandel_, &viewProjection_);
-
-	// 要数数
-	/*const uint32_t kNumBlockHorizontal = 20;
-	const uint32_t kNumBlockVirtical = 10;*/
-	// プロック１個分の横幅
-	/*const float kBlockWidth = 2.0f;
-	const float kBlockHeight = 2.0f;*/
-
-	//// 要数数を変更する
-	//worldTransformBlocks_.resize(kNumBlockVirtical);
-
-	//for (uint32_t i = 0; i < kNumBlockVirtical; i++) {
-	//	worldTransformBlocks_[i].resize(kNumBlockHorizontal);
-	//}
-
-	//for (uint32_t i = 0; i < kNumBlockVirtical; ++i) {
-	//	for (uint32_t j = 0; j < kNumBlockHorizontal; ++j) {
-	//		if (j % 2 == (i % 2)) {
-	//			worldTransformBlocks_[i][j] = new WorldTransform();
-	//			worldTransformBlocks_[i][j]->Initialize();
-	//			worldTransformBlocks_[i][j]->translation_.x = kBlockWidth * j;
-	//			worldTransformBlocks_[i][j]->translation_.y = kBlockHeight * i;
-	//		} else {
-	//			worldTransformBlocks_[i][j] = nullptr;
-	//		}
-	//	}
-	//}
+	//player_->Initialize(model_, textureHandel_, &viewProjection_);
 
 	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
@@ -78,6 +51,10 @@ void GameScene::Initialize() {
 	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 
 	GenerateBlocks();
+
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(playerPosition.x, playerPosition.y);
+
+	player_->Initialize(model_, &viewProjection_, playerPosition);
 }
 void GameScene::Update() {
 
@@ -116,6 +93,8 @@ void GameScene::Update() {
 			isDebugCameraActive_ = true;
 	}
 #endif
+
+	worldTransform_.UpdateMatrix();
 }
 
 void GameScene::Draw() {
@@ -144,7 +123,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
-	//player_->Draw();
+	player_->Draw();
 
 	for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
