@@ -1,18 +1,24 @@
 #define NOMINMAX
-
 #include "Player.h"
 #include "Input.h"
-
+#include "DirectxCommon.h"
+//#include "Easing.h"
 #include <cassert>
 #include <numbers>
 #include <algorithm>
 
-void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position) {
-	//worldTransform_.Initialize(); 
+void Player::Initialize(const Vector3& position, ViewProjection* viewProjection) {
+	// ワールド変換の初期化
+	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
-	worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
-	model_ = model;
+
 	viewProjection_ = viewProjection;
+
+	// 右を向かせる(πとか数値情報が定義されてる)
+	worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
+
+	// 引数の内容をメンバ変数に記録
+	model_ = Model::CreateFromOBJ("player", true); //	textureHandle_ = textureHandle;
 }
 
 void Player::Update() {
@@ -147,10 +153,10 @@ void Player::Update() {
 	worldTransform_.UpdateMatrix();
 	// 行列を定数バッファに転送
 	worldTransform_.TransferMatrix();
-
-	worldTransform_.translation_ += velocity_;
 }
 
-void Player::Draw() { 
-	model_->Draw(worldTransform_, *viewProjection_, textureHandle_); 
+void Player::Draw() {
+
+	// 3Dモデルを描画
+	model_->Draw(worldTransform_, *viewProjection_);
 }
