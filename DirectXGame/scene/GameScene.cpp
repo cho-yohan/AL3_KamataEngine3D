@@ -50,6 +50,9 @@ void GameScene::Initialize() {
 
 	player_->Initialize(playerPosition, &viewProjection_);
 
+	CameraController::Rect cameraArea = { 12.0f, 100 - 12.0f, 6.0f, 6.0f };
+	cameraController_->SetMovableArea(cameraArea);
+
 	GenerateBlocks();
 
 	// デバッグカメラの生成
@@ -68,8 +71,8 @@ void GameScene::Update() {
 		// ビュープロジェクション行列の転送
 		viewProjection_.TransferMatrix();
 	} else {
-		// ビュープロジェクション行列の更新と転送
-		viewProjection_.UpdateMatrix();
+		// ビュープロジェクション行列の転送
+		viewProjection_.TransferMatrix();
 	}
 
 	// 縦横ブロック更新
