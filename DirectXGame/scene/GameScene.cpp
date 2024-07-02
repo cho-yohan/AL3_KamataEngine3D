@@ -11,6 +11,7 @@ GameScene::~GameScene() {
 	delete modelBlock_;
 	delete modelSkydome_;
 	delete debugCamera_;
+	// マップチップフィールドの解放
 	delete mapChipField_;
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -32,6 +33,7 @@ void GameScene::Initialize() {
 	// 3Dモデルのロード
 	model_ = Model::Create();
 	modelBlock_ = Model::Create();
+	// 3Dモデルの生成
 	modelSkydome_ = Model::CreateFromOBJ("sphere", true);
 
 	viewProjection_.Initialize();
