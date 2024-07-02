@@ -10,6 +10,8 @@ GameScene::~GameScene() {
 	delete model_;
 	delete modelBlock_;
 	delete modelSkydome_;
+	delete debugCamera_;
+	delete mapChipField_;
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -19,10 +21,6 @@ GameScene::~GameScene() {
 	}
 
 	worldTransformBlocks_.clear();
-
-	delete debugCamera_;
-
-	delete mapChipField_;
 }
 
 void GameScene::Initialize() {
@@ -36,8 +34,6 @@ void GameScene::Initialize() {
 	modelBlock_ = Model::Create();
 	modelSkydome_ = Model::CreateFromOBJ("sphere", true);
 
-	textureHandel_ = TextureManager::Load("mario.jpg");
-
 	viewProjection_.Initialize();
 	worldTransform_.Initialize();
 
@@ -45,9 +41,7 @@ void GameScene::Initialize() {
 	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 
 	player_ = new Player();
-
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(2, 18);
-
 	player_->Initialize(playerPosition, &viewProjection_);
 
 	CameraController::Rect cameraArea = { 12.0f, 100 - 12.0f, 6.0f, 6.0f };
