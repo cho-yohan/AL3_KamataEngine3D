@@ -34,7 +34,7 @@ public:
 
 	ViewProjection& GetViewProjection() { return viewProjection_; }
 
-	void SetMovableArea(Rect area) { area; }
+	void SetMovableArea(Rect area) { movableArea_ = area; }
 	float Lerp(float x1, float x2, float t) { return (1.0f - t) * x1 + t * x2; }
 
 private:
