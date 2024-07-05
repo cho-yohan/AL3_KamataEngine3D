@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "Audio.h"
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
@@ -12,8 +14,6 @@
 #include "DebugCamera.h"
 #include "MapChipField.h"
 #include "CameraController.h"
-
-#include <vector>
 
 /// <summary>
 /// ゲームシーン
@@ -53,31 +53,33 @@ private: // メンバ変数
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 
-	uint32_t textureHandel_ = 0;
-
+	/// <summary>
+	/// ゲームシーン用
+	/// </summary>
+	// テクスチャハンドル
+	uint32_t textureHandle_ = 0;
+	// 3Dモデル
 	Model* model_ = nullptr;
 	Model* modelBlock_ = nullptr;
-	Model* modelSkydome_ = nullptr;
+	// ワールドトランスフォーム
+	WorldTransform worldTransform_;
+	// ビュープロジェクション
+	ViewProjection viewProjection_;
 
 	Player* player_ = nullptr;
 
-	ViewProjection viewProjection_;
-	WorldTransform worldTransform_;
-
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
-
-	// デバッグカメラ
-	DebugCamera* debugCamera_ = nullptr;
 
 	// デバッグカメラ有効
 	bool isDebugCameraActive_ = false;
+	// デバッグカメラ
+	DebugCamera* debugCamera_ = nullptr;
+
+	// 3Dモデル
+	Model* modelSkydome_ = nullptr;
 
 	// マップチップフィールド
 	MapChipField* mapChipField_;
 
-	CameraController* cameraController_;
-
-	/// <summary>
-	/// ゲームシーン用
-	/// </summary>
+	CameraController* cameraController = nullptr;
 };
