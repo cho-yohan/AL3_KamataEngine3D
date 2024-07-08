@@ -117,46 +117,63 @@ void Player::Update() {
 		// 下降中？
 		if (velocity_.y < 0) {
 			// Y座標が地面以下になったら着地
-			if (worldTransform_.translation_.y <= 2.0f) {
+			if (worldTransform_.translation_.y <= 1.0f) {
 				landing = true;
 			}
 		}
 	}
 
+	// 衝突情報を初期化
+	CollisionMapInfo collisionMapInfo = {};
+	collisionMapInfo.move = velocity_;
+	collisionMapInfo.landing = false;
+	collisionMapInfo.hitWall = false;
+
+	CheckMapCollision(collisionMapInfo);
+
 	// 移動
-	worldTransform_.translation_.x += velocity_.x;
-	worldTransform_.translation_.y += velocity_.y;
-	worldTransform_.translation_.z += velocity_.z;
+	worldTransform_.translation_.x += collisionMapInfo.move;
 
 	// 接地判定
-	if (onGround_) {
-		// ジャンプ開始
-		if (velocity_.y > 0.0f) {
-			// 空中状態に移行
-			onGround_ = false;
-		}
-	} else {
-		// 着地
-		if (landing) {
-			// めり込み排斥
-			worldTransform_.translation_.y = 2.0f;
-			// 摩擦で横方向速度が減衰する
-			velocity_.x *= (1.0f - kAttenuation);
-			// 下方向速度をリセット
-			velocity_.y = 0.0f;
-			// 接地状態に移行
-			onGround_ = true;
-		}
-	}
+	
 
 	// 行列計算
 	worldTransform_.UpdateMatrix();
-	// 行列を定数バッファに転送
-	worldTransform_.TransferMatrix();
 }
 
 void Player::Draw() {
 
 	// 3Dモデルを描画
 	model_->Draw(worldTransform_, *viewProjection_);
+}
+
+void Player::CheckMapCollision(CollisionMapInfo& info) { 
+	CheckMapCollisionUp(info);
+	CheckMapCollisionDown(info);
+	CheckMapCollisionRight(info);
+	CheckMapCollisionLeft(info);
+}
+
+Vector3 Player::CornerPosition(const Vector3& center, Corner corner) { 
+	if (corner == kRightBottom){
+		return center + {+kWidth / 2.0f, -kHeight / 2.0f, 0};
+	} 
+	else if (corner == kLeftBottom) {
+		return center + {-kWidth / 2.0f, -kHeight / 2.0f, 0}; 
+	} 
+	else if (corner == kRightBottom) {
+		return center + {+kWidth / 2.0f, +kHeight / 2.0f, 0};
+	} 
+	else {
+		return center + {-kWidth / 2.0f, +kHeight / 2.0f, 0};
+	}
+
+	Vector3 offsetTable[kNumCorner] = {
+	    {+kWidth / 2.0f, -kHeight / 2.0f, 0}, 
+		{-kWidth / 2.0f, -kHeight / 2.0f, 0}, 
+		{+kWidth / 2.0f, +kHeight / 2.0f, 0}, 
+		{-kWidth / 2.0f, +kHeight / 2.0f, 0}
+	};
+
+	return center + offsetTable[static_cast<uint32_t>(corner)];
 }

@@ -18,6 +18,24 @@ public:
 		kLeft,
 	};
 
+	// 角
+	enum Corner {
+		kRightBottom,   // 右下
+		kLeftBottom,    // 左下
+		kRightTop,      // 右上
+		kLeftTop,       // 左上
+		
+		kNumCorner      // 要素数
+	};
+
+	// マップとの当たり判定情報
+	struct CollisionMapInfo {
+		bool isCeilingImpulse = false;
+		bool landing = false;
+		bool hitWall = false;
+		Vector3 move;
+	};
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -39,6 +57,14 @@ public:
 	const Vector3& GetVelocity() const { return velocity_; }
 
 	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
+
+	void CheckMapCollision(CollisionMapInfo& info);
+	void CheckMapCollisionUp(CollisionMapInfo& info);
+	void CheckMapCollisionDown(CollisionMapInfo& info);
+	void CheckMapCollisionRight(CollisionMapInfo& info);
+	void CheckMapCollisionLeft(CollisionMapInfo& info);
+
+	Vector3 CornerPosition(const Vector3& center, Corner corner);
 
 private:
 	// ワールド変換データ
