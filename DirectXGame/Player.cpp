@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "DirectxCommon.h"
 #include "Easing.h"
+#include "MapChipField.h"
 #include <cassert>
 #include <numbers>
 #include <algorithm>
@@ -190,6 +191,7 @@ void Player::InputMove()
 }
 
 void Player::CheckMapCollision(CollisionMapInfo& info) { 
+
 	CheckMapCollisionUp(info);
 	CheckMapCollisionDown(info);
 	CheckMapCollisionRight(info);
@@ -254,10 +256,10 @@ Vector3 Player::CornerPosition(const Vector3& center, Corner corner) {
 	}
 
 	Vector3 offsetTable[kNumCorner] = {
-	    {+kWidth / 2.0f, -kHeight / 2.0f, 0}, 
-		{-kWidth / 2.0f, -kHeight / 2.0f, 0}, 
-		{+kWidth / 2.0f, +kHeight / 2.0f, 0}, 
-		{-kWidth / 2.0f, +kHeight / 2.0f, 0}
+	    {+kWidth / 2.0f, -kHeight / 2.0f, 0}, // kRightBottom
+		{-kWidth / 2.0f, -kHeight / 2.0f, 0}, // kLeftBottom
+		{+kWidth / 2.0f, +kHeight / 2.0f, 0}, // kRightTop
+		{-kWidth / 2.0f, +kHeight / 2.0f, 0}  // kLeftTop
 	};
 
 	return center + offsetTable[static_cast<uint32_t>(corner)];
