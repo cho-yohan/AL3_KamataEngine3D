@@ -1,6 +1,5 @@
-#include "Model.h"
-#include "WorldTransform.h"
-#include "ViewProjection.h"
+#include "Vector3.h"
+#include <cstdint>
 #include <vector>
 #include <string>
 
@@ -13,41 +12,42 @@ struct MapChipData {
 	std::vector<std::vector<MapChipType>> data;
 };
 
-/// <summary>
-/// マップチップフィールド
-/// </summary>
 class MapChipField {
 public:
-	MapChipType GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex);
-	Vector3 GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex);
-
-	void ResetMapChipData();
-	void LoadMapChipCsv(const std::string& filePath);
-
-	uint32_t GetNumBlockVirtical() const { return kNumBlockVirtical; }
-	uint32_t GetNumBlockHorizontal() const { return kNumBlockHorizontal; }
+	// 1ブロックのサイズ
+	static inline const float kBlockWidth = 1.0f;
+	static inline const float kBlockHeight = 1.0f;
 
 	struct IndexSet {
 		uint32_t xIndex;
 		uint32_t yIndex;
 	};
 
+	struct Rect {
+		float left;   // 左端
+		float right;  // 右端
+		float bottom; // 下端
+		float top;    // 上端
+	};
+
+	void ResetMapChipData();
+
+	void LoadMapChipCsv(const std::string& filePath);
+
+	Vector3 GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex);
+
+	MapChipType GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex);
+
+	MapChipType GetMapChipTypeByPosition(const Vector3& position);
+
 	IndexSet GetMapChipIndexSetByPosition(const Vector3& position);
 
-	struct Rect {
-		float left;    // 左端
-		float right;   // 右端
-		float bottom;  // 下端
-		float top;     // 上端
-	};
+	uint32_t GetNumBlockVirtical() const { return kNumBlockVirtical; }
+	uint32_t GetNumBlockHorizontal() const { return kNumBlockHorizontal; }
 
 	Rect GetRectByIndex(uint32_t xIndex, uint32_t yIndex);
 
 private:
-
-	// 1ブロックのサイズ
-	static inline const float kBlockWidth = 2.0f;
-	static inline const float kBlockHeight = 2.0f;
 	// ブロックの個数
 	static inline const uint32_t kNumBlockVirtical = 20;
 	static inline const uint32_t kNumBlockHorizontal = 100;

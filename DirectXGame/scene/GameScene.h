@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 #include "Audio.h"
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
@@ -14,6 +12,7 @@
 #include "DebugCamera.h"
 #include "MapChipField.h"
 #include "CameraController.h"
+#include <vector>
 
 /// <summary>
 /// ゲームシーン
@@ -46,8 +45,6 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-	void GenerateBlocks();
-
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -56,30 +53,26 @@ private: // メンバ変数
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
-	// テクスチャハンドル
-	uint32_t textureHandle_ = 0;
-	// 3Dモデル
-	Model* model_ = nullptr;
-	Model* modelBlock_ = nullptr;
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_;
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
-
+	// テクスチャハンドル
+	uint32_t textureHandle_ = 0;
+	// 自キャラ
 	Player* player_ = nullptr;
-
+	// モデルデータ
+	Model* modelPlayer_ = nullptr;
+	Model* modelBlock_ = nullptr;
+	Model* modelSkydome_ = nullptr;
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
-
-	// デバッグカメラ有効
-	bool isDebugCameraActive_ = false;
 	// デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;
-
-	// 3Dモデル
-	Model* modelSkydome_ = nullptr;
-
+	// デバッグカメラ有効
+	bool isDebugCameraActive_ = false;
 	// マップチップフィールド
 	MapChipField* mapChipField_;
-
 	CameraController* cameraController = nullptr;
+
+	void GenerateBlocks();
 };
