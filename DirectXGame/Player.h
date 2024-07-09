@@ -60,11 +60,10 @@ public:
 
 	void InputMove();
 
-	void CheckMapCollision(CollisionMapInfo& info);
-	void CheckMapMove(CollisionMapInfo& info);
-	void CheckMapCeiling(CollisionMapInfo& info);
-
+	void UpdateOnGround(CollisionMapInfo& info);
 	void AnimateTurn();
+
+	void CheckMapCollision(CollisionMapInfo& info);
 
 	void CheckMapCollisionUp(CollisionMapInfo& info);
 	void CheckMapCollisionDown(CollisionMapInfo& info);

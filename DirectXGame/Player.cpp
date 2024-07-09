@@ -37,10 +37,21 @@ void Player::Update() {
 	CheckMapCollision(collisionMapInfo);
 
 	// 移動
-	CheckMapMove(collisionMapInfo);
+	worldTransform_.translation_ += collisionMapInfo.move;
 
 	// 天井に接触している場合の処理
-	CheckMapCeiling(collisionMapInfo);
+	if (collisionMapInfo.ceiling) {
+		velocity_.y = 0;
+	}
+	if (collisionMapInfo.hitWall) {
+		// 接地判定
+		UpdateOnGround(collisionMapInfo);
+
+		// 旋回制御
+		AnimateTurn();
+
+		worldTransform_.UpdateMatrix();
+	}
 	
 	// 着地フラグ
 	bool landing = false;
@@ -196,7 +207,9 @@ void Player::CheckMapCollision(CollisionMapInfo& info) {
 	CheckMapCollisionDown(info);
 	CheckMapCollisionRight(info);
 	CheckMapCollisionLeft(info);
+}
 
+void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
 	// 上昇あり？
 	if (info.move.y <= 0) {
 		return;
@@ -242,7 +255,7 @@ void Player::CheckMapCollision(CollisionMapInfo& info) {
 
 Vector3 Player::CornerPosition(const Vector3& center, Corner corner) { 
 
-	if (corner == kRightBottom){
+	/*if (corner == kRightBottom){
 		return center + {+kWidth / 2.0f, -kHeight / 2.0f, 0};
 	} 
 	else if (corner == kLeftBottom) {
@@ -253,7 +266,7 @@ Vector3 Player::CornerPosition(const Vector3& center, Corner corner) {
 	} 
 	else {
 		return center + {-kWidth / 2.0f, +kHeight / 2.0f, 0};
-	}
+	}*/
 
 	Vector3 offsetTable[kNumCorner] = {
 	    {+kWidth / 2.0f, -kHeight / 2.0f, 0}, // kRightBottom
