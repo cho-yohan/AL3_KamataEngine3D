@@ -69,7 +69,7 @@ private:
 	static inline const float kWidth = 0.8f;
 	static inline const float kHeight = 0.8f;
 	static inline const float kBlank = 0.04f;
-	static inline const float kGroundSearchHeight = 0.06f;
+	static inline const float kGroundSearchHeight = 0.16f;
 
 	// マップとの当たり判定情報
 	struct CollisionMapInfo {

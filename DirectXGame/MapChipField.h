@@ -15,8 +15,8 @@ struct MapChipData {
 class MapChipField {
 public:
 	// 1ブロックのサイズ
-	static inline const float kBlockWidth = 1.0f;
-	static inline const float kBlockHeight = 1.0f;
+	static inline const float kBlockWidth = 2.0f;
+	static inline const float kBlockHeight = 2.0f;
 
 	struct IndexSet {
 		uint32_t xIndex;
