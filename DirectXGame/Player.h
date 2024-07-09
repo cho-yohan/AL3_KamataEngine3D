@@ -30,7 +30,7 @@ public:
 
 	// マップとの当たり判定情報
 	struct CollisionMapInfo {
-		bool isCeilingImpulse = false;
+		bool ceiling = false;
 		bool landing = false;
 		bool hitWall = false;
 		Vector3 move;
@@ -58,7 +58,14 @@ public:
 
 	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
 
+	void InputMove();
+
 	void CheckMapCollision(CollisionMapInfo& info);
+	void CheckMapMove(CollisionMapInfo& info);
+	void CheckMapCeiling(CollisionMapInfo& info);
+
+	void AnimateTurn();
+
 	void CheckMapCollisionUp(CollisionMapInfo& info);
 	void CheckMapCollisionDown(CollisionMapInfo& info);
 	void CheckMapCollisionRight(CollisionMapInfo& info);
