@@ -45,7 +45,7 @@ void Player::Update() {
 	}
 	if (collisionMapInfo.hitWall) {
 		// 接地判定
-		UpdateOnGround(collisionMapInfo);
+		UpdateOnGround(collisionMapInfo); 
 
 		// 旋回制御
 		AnimateTurn();
