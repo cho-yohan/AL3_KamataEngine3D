@@ -54,18 +54,13 @@ public:
 private:
 	static inline const float kAcceleration = 0.01f;
 	static inline const float kAttenuation = 0.05f;
-	// ジャンプ初速（上方向）
 	static inline const float kJumpAcceleration = 20.0f;
-	// 重力加速度（下方向）
 	static inline const float kGravityAcceleration = 0.98f;
 	static inline const float kAttenuationWall = 0.2f;
 	static inline const float kAttenuationLanding = 0.0f;
-	// 最大落下速度（下方向）
 	static inline const float kLimitFallSpeed = 0.5f;
 	static inline const float kLimitRunSpeed = 0.5f;
-	// 旋回時間<秒>
-	static inline const float kTimeTurn = 0.3f;
-	// キャラクターの当たり判定サイズ
+	static inline const float kTimeTurn = 0.7f;
 	static inline const float kWidth = 0.8f;
 	static inline const float kHeight = 0.8f;
 	static inline const float kBlank = 0.04f;
@@ -85,8 +80,10 @@ private:
 	WorldTransform worldTransform_;
 	ViewProjection* viewProjection_ = nullptr;
 	Vector3 velocity_ = {};
-	// 接地状態フラグ
+	
 	bool onGround_ = true;
+	bool landing = false;
+
 	LRDirection lrDirection_ = LRDirection::kRight;
 	// 旋回開始時の角度
 	float turnFirstRotationY_ = 0.0f;

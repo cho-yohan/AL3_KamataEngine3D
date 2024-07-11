@@ -35,7 +35,7 @@ void GameScene::Initialize() {
 
 	// 3Dモデルの生成
 	modelPlayer_ = Model::Create();
-	modelBlock_ = Model::Create();
+	modelBlock_ = Model::CreateFromOBJ("block");
 	modelSkydome_ = Model::CreateFromOBJ("sphere", true);
 
 	// マップチップフィールドの生成
@@ -46,7 +46,7 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	// 自キャラの初期化
 	// 座標をマップチップ番号で指定
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(5, 12);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(5, 16);
 	player_->Initialize(playerPosition, &viewProjection_);
 	player_->SetMapChipField(mapChipField_);
 
@@ -138,13 +138,13 @@ void GameScene::Draw() {
 	// 天球の描画
 	modelSkydome_->Draw(worldTransform_, viewProjection_);
 
-	for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
-		for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
-			if (!worldTransformBlockYoko)
+	for (std::vector<WorldTransform*> worldTransformBlockLine : worldTransformBlocks_) {
+		for (WorldTransform*& worldTransformBlock : worldTransformBlockLine) {
+			if (!worldTransformBlock)
 
 				continue;
 
-			modelBlock_->Draw(*worldTransformBlockYoko, viewProjection_);
+			modelBlock_->Draw(*worldTransformBlock, viewProjection_);
 		}
 	}
 

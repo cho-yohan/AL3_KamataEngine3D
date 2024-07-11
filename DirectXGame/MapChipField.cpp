@@ -13,7 +13,6 @@ namespace {
 }
 
 void MapChipField::ResetMapChipData() {
-	
 	// マップチップデータをリセット
     mapChipData_.data.clear();
 	mapChipData_.data.resize(kNumBlockVirtical);
@@ -38,10 +37,13 @@ void MapChipField::LoadMapChipCsv(const std::string& filePath) {
 	mapChipCsv << file.rdbuf();
 	// ファイルを閉じる
 	file.close();
+	// マップチップデータをリセット
+	ResetMapChipData();
+
+	std::string line;
 
 	// CSVからマップチップデータを読み込む
 	for (uint32_t i = 0; i < kNumBlockVirtical; ++i) {
-		std::string line;
 		getline(mapChipCsv, line);
 
 		// 1行分の文字列をストリームに変換して解析しやすくする
@@ -93,8 +95,8 @@ MapChipField::Rect MapChipField::GetRectByIndex(uint32_t xIndex, uint32_t yIndex
 	Rect rect;
 	rect.left = center.x - kBlockWidth / 2.0f;
 	rect.right = center.x + kBlockWidth / 2.0f;
-	rect.bottom = center.y + kBlockHeight / 2.0f;
-	rect.top = center.y - kBlockHeight / 2.0f;
+	rect.bottom = center.y + kBlockWidth / 2.0f;
+	rect.top = center.y - kBlockWidth / 2.0f;
 
 	return rect;
 }
