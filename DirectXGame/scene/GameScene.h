@@ -3,6 +3,7 @@
 #include "Audio.h"
 #include "CameraController.h"
 #include "DebugCamera.h"
+#include "DeathParticles.h"
 #include "DirectXCommon.h"
 #include "Enemy.h"
 #include "Input.h"
@@ -47,6 +48,12 @@ public: // メンバ関数
 	void Draw();
 
 private: // メンバ変数
+
+	enum class Phase {
+		kPlay, // ゲームプレイ
+		kDeath, // デス演出
+	};
+
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
@@ -54,8 +61,6 @@ private: // メンバ変数
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
-	// ワールドトランスフォーム
-	WorldTransform worldTransform_;
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
 	// テクスチャハンドル
@@ -64,11 +69,13 @@ private: // メンバ変数
 	Player* player_ = nullptr;
 	Enemy* enemy_ = nullptr;
 	// モデルデータ
-	Model* modelEnemy_ = nullptr;
 	Model* modelPlayer_ = nullptr;
 	Model* modelBlock_ = nullptr;
 	Model* modelSkydome_ = nullptr;
+	Model* modelEnemy_ = nullptr;
+	Model* modelDeathParticle_ = nullptr;
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
+	WorldTransform worldTransformSkydome_;
 	// デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;
 	// デバッグカメラ有効
@@ -80,10 +87,19 @@ private: // メンバ変数
 	std::list<Enemy*> enemies_;
 	Enemy* newEnemy_ = nullptr;
 
+	Phase phase_;
+
+	DeathParticles* deathParticles_ = nullptr;
+
+	void ChangePhase();
+
 	void GenerateBlocks();
 
-	/// <summary> 
+	void UpdateCamera();
+
+	void UpdateBlocks();
+
  	// 衝突判定と応答
-	/// </summary>
+
 	void CheckAllCollisions();
 };
