@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "MapChipField.h"
 #include "myMath.h"
+#include "Easing.h"
 #include <algorithm>
 #include <cassert>
 #include <numbers>
@@ -375,11 +376,12 @@ void Player::AnimateTurn() {
 	if (turnTimer_ > 0.0f) {
 		turnTimer_ = std::max(turnTimer_ - (1.0f / 60.0f), 0.0f);
 
+		// 左右の自キャラ角度テーブル
 		float destinationRotationYTable[] = {std::numbers::pi_v<float> / 2.0f, std::numbers::pi_v<float> * 3.0f / 2.0f};
-
+		// 状態に応じた角度を取得する
 		float destinationRotationY = destinationRotationYTable[static_cast<uint32_t>(lrDirection_)];
-
-		EaseInOut(destinationRotationY, turnFirstRotationY_, turnTimer_ / kTimeTurn);
+		// 自キャラの角度を設定する
+		worldTransform_.rotation_.y = Easing::Liner(destinationRotationY, turnFirstRotationY_, Easing::EaseInOut(turnTimer_));
 	}
 }
 
