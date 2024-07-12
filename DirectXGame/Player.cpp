@@ -3,9 +3,8 @@
 #include "Player.h"
 #include "DebugText.h"
 #include "Input.h"
-#include "DirectxCommon.h"
-#include "Easing.h"
 #include "MapChipField.h"
+#include "myMath.h"
 #include <algorithm>
 #include <cassert>
 #include <numbers>
@@ -74,7 +73,6 @@ void Player::InputMove()
 
 			// 左右加速
 			Vector3 acceleration = {};
-
 			if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
 				// 左移動中の右入力
 				if (velocity_.x < 0.0f) {
@@ -227,7 +225,7 @@ void Player::CheckMapCollisionDown(CollisionMapInfo& info) {
 			// めり込みを排除する方向に移動量を設定する
 			indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + info.move + Vector3(0, -kHeight / 2.0f, 0));
 			MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
-			info.move.y = std::max(0.0f, rect.top - worldTransform_.translation_.y - (kHeight / 2.0f + kBlank));
+			info.move.y = std::max(0.0f, rect.top - worldTransform_.translation_.y + (kHeight / 2.0f + kBlank));
 			info.landing = true;
 		}
 	}
@@ -270,7 +268,7 @@ void Player::CheckMapCollisionRight(CollisionMapInfo& info) {
 		// 現在座標が壁の外か判定
 		MapChipField::IndexSet indexSetNow;
 		indexSetNow = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + Vector3(+kWidth / 2.0f, 0, 0));
-		if (indexSetNow.yIndex != indexSet.yIndex) {
+		if (indexSetNow.xIndex != indexSet.xIndex) {
 			// めり込みを排除する方向に移動量を設定する
 			indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + info.move + Vector3(+kWidth / 2.0f, 0, 0));
 			MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
@@ -316,11 +314,11 @@ void Player::CheckMapCollisionLeft(CollisionMapInfo& info) {
 		// 現在座標が壁の外か判定
 		MapChipField::IndexSet indexSetNow;
 		indexSetNow = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + Vector3(-kWidth / 2.0f, 0, 0));
-		if (indexSetNow.yIndex != indexSet.yIndex) {
+		if (indexSetNow.xIndex != indexSet.xIndex) {
 			// めり込みを排除する方向に移動量を設定する
 			indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + info.move + Vector3(-kWidth / 2.0f, 0, 0));
 			MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
-			info.move.x = std::max(0.0f, rect.right - worldTransform_.translation_.x - (kWidth / 2.0f + kBlank));
+			info.move.x = std::max(0.0f, rect.right - worldTransform_.translation_.x + (kWidth / 2.0f + kBlank));
 			info.hitWall = true;
 		}
 	}
@@ -375,7 +373,7 @@ void Player::UpdateOnGround(const CollisionMapInfo& info) {
 
 void Player::AnimateTurn() {
 	if (turnTimer_ > 0.0f) {
-		turnTimer_ = std::max(turnTimer_ - 1.0f / 60.0f, 0.0f);
+		turnTimer_ = std::max(turnTimer_ - (1.0f / 60.0f), 0.0f);
 
 		float destinationRotationYTable[] = {std::numbers::pi_v<float> / 2.0f, std::numbers::pi_v<float> * 3.0f / 2.0f};
 

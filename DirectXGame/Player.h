@@ -3,7 +3,6 @@
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "myMath.h"
 
 class MapChipField;
 
