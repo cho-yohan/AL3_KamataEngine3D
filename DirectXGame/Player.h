@@ -81,7 +81,6 @@ private:
 	Vector3 velocity_ = {};
 	
 	bool onGround_ = true;
-	bool landing = false;
 
 	LRDirection lrDirection_ = LRDirection::kRight;
 	// 旋回開始時の角度
