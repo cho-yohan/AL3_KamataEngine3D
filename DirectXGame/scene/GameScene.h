@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 #include "Audio.h"
 #include "CameraController.h"
 #include "DebugCamera.h"
@@ -14,6 +12,8 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include <list>
+#include <vector>
 
 /// <summary>
 /// ゲームシーン
@@ -77,5 +77,13 @@ private: // メンバ変数
 	MapChipField* mapChipField_;
 	CameraController* cameraController = nullptr;
 
+	std::list<Enemy*> enemies_;
+	Enemy* newEnemy_ = nullptr;
+
 	void GenerateBlocks();
+
+	/// <summary> 
+ 	// 衝突判定と応答
+	/// </summary>
+	void CheckAllCollisions();
 };

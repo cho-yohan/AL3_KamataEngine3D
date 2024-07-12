@@ -1,10 +1,12 @@
 #pragma once
 
+#include "AABB.h"
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 
 class MapChipField;
+class Enemy;
 
 /// <summary>
 /// 自キャラ
@@ -43,6 +45,13 @@ public:
 	/// </summary>
 	void Draw();
 
+	// ワールド座標を取得
+	Vector3 GetWorldPosition();
+
+	AABB GetAABB();
+
+	void OnCollision(const Enemy* enemy);
+
 	// setter
 	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
 	
@@ -73,21 +82,14 @@ private:
 		Vector3 move;
 	};
 
-	// モデル
 	Model* model_ = nullptr;
-	// ワールド変換データ
 	WorldTransform worldTransform_;
 	ViewProjection* viewProjection_ = nullptr;
 	Vector3 velocity_ = {};
-	
 	bool onGround_ = true;
-
 	LRDirection lrDirection_ = LRDirection::kRight;
-	// 旋回開始時の角度
 	float turnFirstRotationY_ = 0.0f;
-	// 旋回タイマー
 	float turnTimer_ = 0.0f;
-	// マップチップによるフィールド
 	MapChipField* mapChipField_ = nullptr;
 
 	void InputMove();
