@@ -3,17 +3,17 @@
 #include <vector>
 
 #include "Audio.h"
+#include "CameraController.h"
+#include "DebugCamera.h"
 #include "DirectXCommon.h"
+#include "Enemy.h"
 #include "Input.h"
+#include "MapChipField.h"
 #include "Model.h"
+#include "Player.h"
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "Player.h"
-#include "DebugCamera.h"
-#include "Skydome.h"
-#include "MapChipField.h"
-#include "CameraController.h"
 
 /// <summary>
 /// ゲームシーン
@@ -62,7 +62,9 @@ private: // メンバ変数
 	uint32_t textureHandle_ = 0;
 	// 自キャラ
 	Player* player_ = nullptr;
+	Enemy* enemy_ = nullptr;
 	// モデルデータ
+	Model* modelEnemy_ = nullptr;
 	Model* modelPlayer_ = nullptr;
 	Model* modelBlock_ = nullptr;
 	Model* modelSkydome_ = nullptr;
