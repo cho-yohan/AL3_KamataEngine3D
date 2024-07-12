@@ -34,7 +34,7 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 
 	// 3Dモデルの生成
-	modelPlayer_ = Model::Create();
+	modelPlayer_ = Model::CreateFromOBJ("player");
 	modelBlock_ = Model::CreateFromOBJ("block");
 	modelSkydome_ = Model::CreateFromOBJ("sphere", true);
 
@@ -47,7 +47,7 @@ void GameScene::Initialize() {
 	// 自キャラの初期化
 	// 座標をマップチップ番号で指定
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(5, 16);
-	player_->Initialize(playerPosition, &viewProjection_);
+	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition);
 	player_->SetMapChipField(mapChipField_);
 
 	viewProjection_.Initialize();

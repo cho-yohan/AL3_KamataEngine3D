@@ -10,7 +10,11 @@
 #include <cassert>
 #include <numbers>
 
-void Player::Initialize(const Vector3& position, ViewProjection* viewProjection) {
+void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position) {
+
+	assert(model);
+
+	model_ = model;
 	// ワールド変換の初期化
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
@@ -18,9 +22,6 @@ void Player::Initialize(const Vector3& position, ViewProjection* viewProjection)
 	worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
 
 	viewProjection_ = viewProjection;
-
-	// 引数の内容をメンバ変数に記録
-	model_ = Model::CreateFromOBJ("player", true); //	textureHandle_ = textureHandle;
 }
 
 void Player::Update() {
@@ -81,7 +82,7 @@ void Player::InputMove()
 					velocity_.x *= (1.0f - kAttenuation);
 				}
 
-				acceleration.x += kAcceleration;
+				acceleration.x += kAcceleration / 60.0f;
 
 				if (lrDirection_ != LRDirection::kRight) {
 					lrDirection_ = LRDirection::kRight;
@@ -97,7 +98,7 @@ void Player::InputMove()
 					velocity_.x *= (1.0f - kAttenuation);
 				}
 
-				acceleration.x -= kAcceleration;
+				acceleration.x -= kAcceleration / 60.0f;
 
 				if (lrDirection_ != LRDirection::kLeft) {
 					lrDirection_ = LRDirection::kLeft;
@@ -159,14 +160,14 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftTop]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
 	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex + 1);
-	if (mapChipType == MapChipType::kBlock) {
+	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
 	}
 	// 右上点の判定
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightTop]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
 	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex + 1);
-	if (mapChipType == MapChipType::kBlock) {
+	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
 	}
 
@@ -281,7 +282,7 @@ void Player::CheckMapCollisionRight(CollisionMapInfo& info) {
 
 void Player::CheckMapCollisionLeft(CollisionMapInfo& info) { 
 	// 左移動あり？
-	if (info.move.x <= 0) {
+	if (info.move.x >= 0) {
 		return;
 	}
 
@@ -332,7 +333,7 @@ void Player::UpdateOnGround(const CollisionMapInfo& info) {
 			// 空中状態に以降
 			onGround_ = false;
 		} else {
-			std::array<Vector3, kNumCorner > positionsNew;
+			std::array<Vector3, kNumCorner> positionsNew;
 
 			for (uint32_t i = 0; i < positionsNew.size(); ++i) {
 				positionsNew[i] = CornerPosition(worldTransform_.translation_ + info.move, static_cast<Corner>(i));
@@ -340,7 +341,7 @@ void Player::UpdateOnGround(const CollisionMapInfo& info) {
 			bool ground = false;
 
 			MapChipType mapChipType;
-
+			// 左下点の判定
 			MapChipField::IndexSet indexSet;
 
 			indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftBottom] + Vector3(0, -kGroundSearchHeight, 0));
@@ -374,7 +375,7 @@ void Player::UpdateOnGround(const CollisionMapInfo& info) {
 
 void Player::AnimateTurn() {
 	if (turnTimer_ > 0.0f) {
-		turnTimer_ = std::max(turnTimer_ - (1.0f / 60.0f), 0.0f);
+		turnTimer_ = std::max(turnTimer_ - 1.0f / 60.0f, 0.0f);
 
 		float destinationRotationYTable[] = {std::numbers::pi_v<float> / 2.0f, std::numbers::pi_v<float> * 3.0f / 2.0f};
 

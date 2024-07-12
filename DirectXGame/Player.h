@@ -32,7 +32,7 @@ public:
 	/// 初期化
 	/// </summary>
 	//	void Initialize(Model* model, uint32_t textureHandle, ViewProjection* viewProjection);
-	void Initialize(const Vector3& position, ViewProjection* viewProjection);
+	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position);
 
 	/// <summary>
 	/// 更新
@@ -52,12 +52,12 @@ public:
 	const Vector3& GetVelocity() const { return velocity_; }
 
 private:
-	static inline const float kAcceleration = 0.01f;
+	static inline const float kAcceleration = 0.1f;
 	static inline const float kAttenuation = 0.05f;
 	static inline const float kJumpAcceleration = 20.0f;
 	static inline const float kGravityAcceleration = 0.98f;
 	static inline const float kAttenuationWall = 0.2f;
-	static inline const float kAttenuationLanding = 0.0f;
+	static inline const float kAttenuationLanding = 0.5f;
 	static inline const float kLimitFallSpeed = 0.5f;
 	static inline const float kLimitRunSpeed = 0.5f;
 	static inline const float kTimeTurn = 0.7f;
