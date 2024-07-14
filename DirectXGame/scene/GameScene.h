@@ -47,6 +47,8 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+	bool IsFinished() const { return finished_; };
+
 private: // メンバ変数
 
 	enum class Phase {
@@ -90,6 +92,8 @@ private: // メンバ変数
 	Phase phase_;
 
 	DeathParticles* deathParticles_ = nullptr;
+
+	bool finished_ = false;
 
 	void ChangePhase();
 
