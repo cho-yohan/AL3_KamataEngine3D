@@ -109,6 +109,9 @@ void GameScene::Update() {
 		CheckAllCollisions();
 
 	case Phase::kDeath:
+		if (deathParticles_ && deathParticles_->IsFinished()) {
+			finished_ = true;
+		}
 		worldTransformSkydome_.UpdateMatrix();
 
 		for (Enemy* enemy : enemies_) {

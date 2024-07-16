@@ -89,11 +89,10 @@ private: // メンバ変数
 	std::list<Enemy*> enemies_;
 	Enemy* newEnemy_ = nullptr;
 
+	bool finished_ = false;
 	Phase phase_;
 
 	DeathParticles* deathParticles_ = nullptr;
-
-	bool finished_ = false;
 
 	void ChangePhase();
 

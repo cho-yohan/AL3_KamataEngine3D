@@ -5,8 +5,8 @@
 #include "ImGuiManager.h"
 #include "PrimitiveDrawer.h"
 #include "TextureManager.h"
-#include "WinApp.h"
 #include "TitleScene.h"
+#include "WinApp.h"
 
 GameScene* gameScene = nullptr;
 TitleScene* titleScene = nullptr;
@@ -18,11 +18,54 @@ enum class Scene {
 	kGame,
 };
 
-Scene scene = Scene::kUnknown;
+Scene scene = Scene::kTitle;
 
-void ChangeScene();
-void UpdateScene();
-void DrawScene();
+void ChangeScene() {
+	switch (scene) {
+	case Scene::kTitle:
+		if (titleScene->IsFinished()) {
+			// シーン変更
+			scene = Scene::kGame;
+			// 旧シーンの解放
+			delete titleScene;
+			titleScene = nullptr;
+			// 新シーンの生成と初期化
+			gameScene = new GameScene;
+			gameScene->Initialize();
+		}
+		break;
+	case Scene::kGame:
+		if (gameScene->IsFinished()) {
+			// シーン変更
+			scene = Scene::kTitle;
+			delete gameScene;
+			gameScene = nullptr;
+			titleScene = new TitleScene;
+			titleScene->Initialize();
+		}
+		break;
+	}
+}
+void UpdateScene() {
+	switch (scene) {
+	case Scene::kTitle:
+		titleScene->Update();
+		break;
+	case Scene::kGame:
+		gameScene->Update();
+		break;
+	}
+}
+void DrawScene() {
+	switch (scene) { 
+	case Scene::kTitle:
+		titleScene->Draw();
+		break;
+	case Scene::kGame:
+		gameScene->Draw();
+		break;
+	}
+}
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -74,9 +117,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 #pragma endregion
 
 	// ゲームシーンの初期化
-	gameScene = new GameScene();
-	gameScene->Initialize();
-
+	scene = Scene::kTitle;
 	scene = Scene::kTitle;
 	titleScene = new TitleScene;
 	titleScene->Initialize();
@@ -92,18 +133,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		imguiManager->Begin();
 		// 入力関連の毎フレーム処理
 		input->Update();
-		// ゲームシーンの毎フレーム処理
-		gameScene->Update();
-		// 軸表示の更新
-		axisIndicator->Update();
+		// シーンの切り替え
+		ChangeScene();
+		// シーン変更
+		UpdateScene();
 		// ImGui受付終了
 		imguiManager->End();
-
-		titleScene->Update();
-
-		ChangeScene();
-
-		UpdateScene();
 
 		// 描画開始
 		dxCommon->PreDraw();
@@ -117,10 +152,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		imguiManager->Draw();
 		// 描画終了
 		dxCommon->PostDraw();
-
-		titleScene->Draw();
-
-		DrawScene();
 	}
 
 	// 各種解放
@@ -136,37 +167,4 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	win->TerminateGameWindow();
 
 	return 0;
-}
-
-void ChangeScene() { 
-	switch (scene) { 
-	case Scene::kTitle:
-		if (titleScene->IsFinished()) {
-			// シーン変更
-			scene = Scene::kGame;
-			// 旧シーンの解放
-			delete titleScene;
-			titleScene = nullptr;
-			// 新シーンの生成と初期化
-			gameScene = new GameScene;
-			gameScene->Initialize();
-		}
-		break;
-	case Scene::kGame:
-		if (gameScene->IsFinished()) {
-		
-		}
-		break;
-	}
-}
-
-void UpdateScene() { 
-	switch (scene) { 
-	case Scene::kTitle:
-		titleScene->Update();
-		break;
-	case Scene::kGame:
-		gameScene->Update();
-		break;
-	}
 }
