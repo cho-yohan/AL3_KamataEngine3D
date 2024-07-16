@@ -9,7 +9,7 @@ TitleScene::~TitleScene() {
 	delete modelTitle_;
 }
 
-void TitleScene::Initialize() { 
+void TitleScene::Initialize() {
 	modelTitle_ = Model::CreateFromOBJ("titleFont", true); 
 	modelPlayer_ = Model::CreateFromOBJ("player");
 	// ビュープロジェクションの初期化
