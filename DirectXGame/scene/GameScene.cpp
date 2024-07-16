@@ -76,11 +76,11 @@ void GameScene::Initialize() {
 	cameraController->SetMovableArea(cameraArea);
 
 	// 敵の生成
-	newEnemy_ = new Enemy();
+	Enemy* newEnemy = new Enemy();
 	Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(14, 18);
-	newEnemy_->Initialize(modelEnemy_, &viewProjection_, enemyPosition);
+	newEnemy->Initialize(modelEnemy_, &viewProjection_, enemyPosition);
 
-	enemies_.push_back(newEnemy_);
+	enemies_.push_back(newEnemy);
 
 	phase_ = Phase::kPlay;
 }
@@ -107,7 +107,7 @@ void GameScene::Update() {
 		UpdateBlocks();
 
 		CheckAllCollisions();
-
+		break;
 	case Phase::kDeath:
 		if (deathParticles_ && deathParticles_->IsFinished()) {
 			finished_ = true;

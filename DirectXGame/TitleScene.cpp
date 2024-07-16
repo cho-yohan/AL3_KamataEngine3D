@@ -1,3 +1,5 @@
+#define NOMINMAX
+
 #include "TitleScene.h"
 #include "DirectXCommon.h"
 #include "Input.h"

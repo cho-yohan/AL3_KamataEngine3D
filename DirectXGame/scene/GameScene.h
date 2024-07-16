@@ -69,7 +69,6 @@ private: // メンバ変数
 	uint32_t textureHandle_ = 0;
 	// 自キャラ
 	Player* player_ = nullptr;
-	Enemy* enemy_ = nullptr;
 	// モデルデータ
 	Model* modelPlayer_ = nullptr;
 	Model* modelBlock_ = nullptr;
@@ -87,7 +86,6 @@ private: // メンバ変数
 	CameraController* cameraController = nullptr;
 
 	std::list<Enemy*> enemies_;
-	Enemy* newEnemy_ = nullptr;
 
 	bool finished_ = false;
 	Phase phase_;
