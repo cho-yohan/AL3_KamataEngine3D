@@ -23,8 +23,8 @@ private:
 	WorldTransform worldTransformTitle_;
 	WorldTransform worldTransformPlayer_;
 
-	Model* modelPlayer_ = nullptr;
 	Model* modelTitle_ = nullptr;
+	Model* modelPlayer_ = nullptr;
 
 	float counter_ = 0.0f;
 	bool finished_ = false;
